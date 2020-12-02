@@ -5,20 +5,22 @@
 #include <iostream>
 #include <string>
 #include <istream>
+#include <algorithm>
 
 class Lexer{
 public:
     Lexer(std::istream &input): input(input){}
-
+    
     std::string getText(){ return text; }
     int getNextChar(){ return input.get();}
-    void ungetChar(){ input.unget();}
+    void ungetChar(int ch){ input.unget();}
     void reportError(int ch){
         throw std::string("Error: Caracter Invalido: " + (char)ch);
     }
 
     Token getNextToken();
-    Token findKeyWord(const std::string &str);
+    Token findOperator(std::string &str);
+    Token findKeyWord(std::string &str);
     static const char *tokenToString(Token tk);
 private:
     std::string text;

@@ -3,7 +3,10 @@
 /*!fa2lexer
     %option generate.tokens = true;
     %file "start.jff";
+    %file "constants.jff";
     %file "identifiers.jff";
+    %file "comments.jff";
+    %file "operators.jff";
 
     %token.descriptions{
         Identifier = "Indentifier",
@@ -34,13 +37,80 @@
         KwFor = "Keyword For",
         KwDo = "Keyword Do",
         KwPrint = "Keyword Write",
-        KwPrintLn = "Keyword Writeln"
+        KwPrintLn = "Keyword Writeln",
+        OpenBracket = "Open Bracket Operator",
+        CloseBracket = "Close Bracket Operator",
+        Coma = "Coma Operator",
+        SemiColon = "SemiColon Operator",
+        Equal = "Equal Operator",
+        Minus = "Minus Operator",
+        Plus = "Plus Operator",
+        Mult = "Multiplication Operator",
+        LessThan = "Less than Operator",
+        GreaterThan = "Greater than Operator",
+        Different = "Different Operator",
+        LessThanEq = "Less than equal Operator",
+        GreaterThanEq = "Greater than equal Operator",
+        Dot = "Dot Operator",
+        Assign = "Assign Operator",
+        Colon = "Color Operator",
+        OpenParen = "Open Parenthesis",
+        CloseParen = "Close Parenthesis",
+        Unknown = "Unknwon Token"
     }
 
     %generate.state_enum(State);
 */
 
-Token Lexer::findKeyWord(const std::string &str){
+Token Lexer::findOperator(std::string &str){
+    if(str == "["){
+        return Token::OpenBracket;
+    }else if(str == "]"){
+        return Token::CloseBracket;
+    }else if(str == ","){
+        return Token::Coma;
+    }else if(str == ";"){
+        return Token::SemiColon;
+    }else if(str == "="){
+        return Token::Equal;
+    }else if(str == "-"){
+        return Token::Minus;
+    }else if(str == "+"){
+        return Token::Plus;
+    }else if(str == "*"){
+        return Token::Mult;
+    }else if(str == "<"){
+        return Token::LessThan;
+    }else if(str == ">"){
+        return Token::GreaterThan;
+    }else if(str == "<="){
+        return Token::LessThanEq;
+    }else if(str == ">="){
+        return Token::GreaterThanEq;
+    }else if(str == "<>"){
+        return Token::Different;
+    }else if(str == "."){
+        return Token::Dot;
+    }else if(str == ":="){
+        return Token::Assign;
+    }else if(str == ":"){
+        return Token::Colon;
+    }else if(str == "("){
+        return Token::OpenParen;
+    }else if(str == ")"){
+        return Token::CloseParen;
+    }else{
+        return Token::Unknown;
+    }
+}
+
+Token Lexer::findKeyWord(std::string &str){
+
+    std::for_each(str.begin(),str.end(),[](char &c){
+        c = ::tolower(c);
+    });
+
+
     if(str == "program"){
         return Token::KwProgram;
     }else if(str == "var"){

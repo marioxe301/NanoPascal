@@ -1,0 +1,22 @@
+$123food
+$food123
+123break
+$123shl3
+$123shl 3
+1250x356
+break123
+breakwhile
+%01100101
+
+// Este es un comentario de linea
+{ Este es un comentario
+de bloque
+}
+
+(*
+Tambien es un
+comentario de bloque
+*)
+
+
+program Holamundo; ::::::

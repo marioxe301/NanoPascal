@@ -1,0 +1,23 @@
+Program GCD;
+var
+    a,b: integer;
+    x,y,z : INTEGER;
+//Funcion que hace calculo del maximo comun divisor
+function gcd (a: integer, b: INTEGER): INTEGER;
+begin
+    if b = 0 then
+        gcd := a
+    else
+        gcd := gcd( b , a Mod b);
+
+end;
+
+begin
+    a := 10;
+    b := 20;
+    x := a;
+    y := b;
+    z := gcd(x,y);
+
+    writeLn(z);
+end.
