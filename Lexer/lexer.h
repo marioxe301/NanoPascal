@@ -15,12 +15,13 @@ public:
     int getNextChar(){ return input.get();}
     void ungetChar(int ch){ input.unget();}
     void reportError(int ch){
-        throw std::string("Error: Caracter Invalido: " + (char)ch);
+        throw std::string("Error inesperado");
     }
 
     Token getNextToken();
     Token findOperator(std::string &str);
     Token findKeyWord(std::string &str);
+    Token findStringConst(std::string &str);
     static const char *tokenToString(Token tk);
 private:
     std::string text;

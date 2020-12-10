@@ -45,8 +45,8 @@
 			<y>260.0</y>
 		</state>
 		<state id="10" name="q10">
-			<x>241.0</x>
-			<y>138.0</y>
+			<x>431.0</x>
+			<y>122.0</y>
 			<label>return findOperator(text);</label>
 		</state>
 		<!--The list of transitions.-->

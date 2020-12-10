@@ -10,6 +10,9 @@
 
     %token.descriptions{
         Identifier = "Indentifier",
+        KwRead = "Keyword Read",
+        KwProc = "Keyword Procedure",
+        KwFunc = "Keyword Function",
         KwProgram = "Keyword Program",
         KwVar = "Keyword Variable",
         KwArray = "Keyword Array",
@@ -56,11 +59,18 @@
         Colon = "Color Operator",
         OpenParen = "Open Parenthesis",
         CloseParen = "Close Parenthesis",
+        StringConst = "String Constant",
+        CharConst = "Char Constant",
+        BoolConst = "Bool Constant",
         Unknown = "Unknwon Token"
     }
 
     %generate.state_enum(State);
 */
+
+Token Lexer::findStringConst(std::string &str){
+    return str.size() == 1 ? Token::CharConst : Token::StringConst;
+}
 
 Token Lexer::findOperator(std::string &str){
     if(str == "["){
@@ -167,7 +177,16 @@ Token Lexer::findKeyWord(std::string &str){
         return Token::KwPrint;
     }else if(str == "writeln"){
         return Token::KwPrintLn;
-    }else{
+    }else if(str == "function"){
+        return Token::KwFunc;
+    }else if(str == "procedure"){
+        return Token::KwProc;
+    }else if(str == "read"){
+        return Token::KwRead;
+    }else if(str == "true" || str == "false"){
+        return Token::BoolConst;   
+    }
+    else{
         return Token::Identifier;
     }
 }

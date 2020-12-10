@@ -19,4 +19,10 @@ comentario de bloque
 *)
 
 
-program Holamundo; ::::::
+program Holamundo;
+
+'Holamundo'
+
+'g'
+
+'"'

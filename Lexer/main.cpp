@@ -20,10 +20,17 @@ int main(int argc, char *argv[])
     Lexer lexer(input);
 
     Token tk = lexer.getNextToken();
-
-    while (tk != Token::Eof)
+    try
     {
-        std::cout << "Token: " << Lexer::tokenToString(tk) << ", Lexema: " << lexer.getText() << '\n';
-        tk = lexer.getNextToken();
+        while (tk != Token::Eof)
+        {
+            std::cout << "Token: " << Lexer::tokenToString(tk) << ", Lexema: " << lexer.getText() << '\n';
+            tk = lexer.getNextToken();
+        }
     }
+    catch(const std::string& e)
+    {
+        std::cerr << e << '\n';
+    }
+    
 }
