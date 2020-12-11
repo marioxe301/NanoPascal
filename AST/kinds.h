@@ -20,7 +20,13 @@ enum class NodeKind{
     GreaterThanExpr,
     GreaterThanEqExpr,
     EqualExpr,
-    DiffExpr
+    DiffExpr,
+    StringExpr,
+    AssignStmt,
+    PrintStmt,
+    IfStmt,
+    WhileStmt,
+    SeqStmt
 };
 
 #endif

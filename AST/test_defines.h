@@ -2,6 +2,10 @@
 #define __AST_DEF__
 
 // Defines to test the AST
+#define LOCAL true
+#define GLOBAL false
+#define ENDL true
+#define NOENDL false
 
 #define VAR(a,b) std::make_shared<VariableExpr>(a,b)
 #define NUMBER(a) std::make_shared<NumberExpr>(a)
@@ -23,5 +27,13 @@
 #define GREATERTHANEQ(a,b) std::make_shared<GreaterThanEqExpr>(a,b)
 #define EQUAL(a,b) std::make_shared<EqualExpr>(a,b)
 #define DIFF(a,b) std::make_shared<DiffExpr>(a,b)
+
+#define ASSIGN(a,b) std::make_shared<AssignStmt>(a,b)
+#define PRINT(a,b) std::make_shared<PrintStmt>(a,b)
+#define STR(a) std::make_shared<StringExpr>(a)
+
+#define IF(a,b,c) std::make_shared<IfStmt>(a,b,c)
+#define WHILE(a,b) std::make_shared<WhileStmt>(a,b)
+#define SEQ(a) std::make_shared<SeqStmt>(a)
 
 #endif

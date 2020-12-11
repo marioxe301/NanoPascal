@@ -4,31 +4,45 @@
 #include "ast.h"
 #include<unordered_map>
 
+typedef struct{
+    std::string str;
+    int value;
+}return_type;
+
 class Interpreter{
 public:
     Interpreter() = default;
-    int execute(const ASTNode *root);
+    return_type execute(const ASTNode *root);
 private:
-    int visit(const NumberExpr * expr);
-    int visit(const VariableExpr * expr);
+    return_type visit(const NumberExpr * expr);
+    return_type visit(const VariableExpr * expr);
 
-    int visit(const AddExpr * expr);
-    int visit(const SubExpr * expr);
-    int visit(const MultExpr * expr);
-    int visit(const DivExpr * expr);
-    int visit(const AndExpr * expr);
-    int visit(const OrExpr * expr);
-    int visit(const XorExpr * expr);
-    int visit(const NotExpr * expr);
-    int visit(const ModExpr * expr);
-    int visit(const ShlExpr * expr);
-    int visit(const ShrExpr * expr);
-    int visit(const LessThanExpr * expr);
-    int visit(const LessThanEqExpr * expr);
-    int visit(const GreaterThanExpr * expr);
-    int visit(const GreaterThanEqExpr * expr);
-    int visit(const EqualExpr * expr);
-    int visit(const DiffExpr * expr);
+    return_type visit(const AddExpr * expr);
+    return_type visit(const SubExpr * expr);
+    return_type visit(const MultExpr * expr);
+    return_type visit(const DivExpr * expr);
+    return_type visit(const AndExpr * expr);
+    return_type visit(const OrExpr * expr);
+    return_type visit(const XorExpr * expr);
+    return_type visit(const NotExpr * expr);
+    return_type visit(const ModExpr * expr);
+    return_type visit(const ShlExpr * expr);
+    return_type visit(const ShrExpr * expr);
+    return_type visit(const LessThanExpr * expr);
+    return_type visit(const LessThanEqExpr * expr);
+    return_type visit(const GreaterThanExpr * expr);
+    return_type visit(const GreaterThanEqExpr * expr);
+    return_type visit(const EqualExpr * expr);
+    return_type visit(const DiffExpr * expr);
+
+    return_type visit(const StringExpr * expr);
+    return_type visit(const AssignStmt * expr);
+    return_type visit(const PrintStmt * expr);
+
+    return_type visit(const IfStmt * expr);
+    return_type visit(const WhileStmt * expr);
+    return_type visit(const SeqStmt * expr);
+
 
 private:
     std::unordered_map<std::string,int>global_vars;

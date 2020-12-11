@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include "kinds.h"
+#include <vector>
 
 /* AST backbone begin */
 class ASTNode{
@@ -224,10 +225,76 @@ public:
     bool isLocal;
 };
 
+class StringExpr: public Expr{
+public:
+    StringExpr(const std::string &str)
+    : str(str)
+    {}
+
+    NodeKind getKind() const override{ return NodeKind::StringExpr;}
+public:
+    std::string str;
+};
+
 /* Expresion seccion end */
 
 
 /* Statements seccion begin */
+
+class AssignStmt: public Stmt{
+public:
+    AssignStmt(const std::string &ident, const ExprPtr &expr)
+    : ident(ident), expr(expr)
+    {}
+    NodeKind getKind() const override{ return NodeKind::AssignStmt;}
+public:
+    std::string ident;
+    ExprPtr expr;
+};
+
+class PrintStmt: public Stmt{
+public:
+    PrintStmt(const ExprPtr &out,const bool &b)
+    : out(out), breakLine(b)
+    {}
+    NodeKind getKind() const override { return NodeKind::PrintStmt;}
+public:
+    bool breakLine;
+    ExprPtr out;
+};
+
+class IfStmt: public Stmt{
+public:
+    IfStmt(const ExprPtr &cond,const StmtPtr & stmt_1, const StmtPtr & stmt_2)
+    : cond(cond), stmt_1(stmt_1), stmt_2(stmt_2)
+    {}
+    NodeKind getKind() const override { return NodeKind::IfStmt;}
+public:
+    ExprPtr cond;
+    StmtPtr stmt_1; // If dentro de un if
+    StmtPtr stmt_2; // Else
+};
+
+class WhileStmt: public Stmt{
+public:
+    WhileStmt(const ExprPtr & cond, const StmtPtr & block)
+    : cond(cond), block(block)
+    {}
+    NodeKind getKind() const override { return NodeKind::WhileStmt;}
+public:
+    ExprPtr cond;
+    StmtPtr block;
+};
+
+class SeqStmt: public Stmt{
+public:
+    SeqStmt(const std::vector<StmtPtr>&sequence)
+    : sequence(sequence)
+    {}
+    NodeKind getKind() const override { return NodeKind::SeqStmt;}
+public:
+    std::vector<StmtPtr> sequence;
+};
 
 /* Statement seccion end */
 
