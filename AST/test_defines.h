@@ -28,12 +28,19 @@
 #define EQUAL(a,b) std::make_shared<EqualExpr>(a,b)
 #define DIFF(a,b) std::make_shared<DiffExpr>(a,b)
 
-#define ASSIGN(a,b) std::make_shared<AssignStmt>(a,b)
-#define PRINT(a,b) std::make_shared<PrintStmt>(a,b)
-#define STR(a) std::make_shared<StringExpr>(a)
+#define ASSIGN(a,b,c) std::make_shared<AssignStmt>(a,b,c)
+#define PRINT(a,b,c) std::make_shared<PrintStmt>(a,b,c)
+//#define STR(a) std::make_shared<StringExpr>(a)
 
 #define IF(a,b,c) std::make_shared<IfStmt>(a,b,c)
 #define WHILE(a,b) std::make_shared<WhileStmt>(a,b)
 #define SEQ(a) std::make_shared<SeqStmt>(a)
+
+#define READ(a,b) std::make_shared<ReadStmt>(a,b)
+
+#define FUNC_DECL(a,b,c) std::make_shared<FuncDeclStmt>(a,b,c)
+#define FUNC_CALL(a,b) std::make_shared<FuncCallStmt>(a,b)
+
+#define RETURN(n) std::make_shared<ReturnExpr>(n)
 
 #endif

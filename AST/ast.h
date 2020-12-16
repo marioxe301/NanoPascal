@@ -215,7 +215,7 @@ public:
 
 class VariableExpr: public Expr{
 public:
-    VariableExpr(const std::string &ident, const bool &isLocal)
+    VariableExpr(const std::string &ident,bool &isLocal)
     : ident(ident), isLocal(isLocal)
     {}
 
@@ -225,7 +225,7 @@ public:
     bool isLocal;
 };
 
-class StringExpr: public Expr{
+/* class StringExpr: public Expr{
 public:
     StringExpr(const std::string &str)
     : str(str)
@@ -234,6 +234,15 @@ public:
     NodeKind getKind() const override{ return NodeKind::StringExpr;}
 public:
     std::string str;
+}; */
+
+class ReturnExpr: public Expr{
+public:
+    ReturnExpr(const ExprPtr &expr)
+    :ret(expr)
+    {}
+public:
+    ExprPtr ret;
 };
 
 /* Expresion seccion end */
@@ -243,24 +252,37 @@ public:
 
 class AssignStmt: public Stmt{
 public:
-    AssignStmt(const std::string &ident, const ExprPtr &expr)
-    : ident(ident), expr(expr)
+    AssignStmt(const std::string &ident, const ExprPtr &expr,const bool&isLocal)
+    : ident(ident), expr(expr),isLocal(isLocal)
     {}
     NodeKind getKind() const override{ return NodeKind::AssignStmt;}
 public:
     std::string ident;
     ExprPtr expr;
+    bool isLocal;
 };
 
 class PrintStmt: public Stmt{
 public:
-    PrintStmt(const ExprPtr &out,const bool &b)
-    : out(out), breakLine(b)
+    PrintStmt(const std::string &msj,const ExprPtr &out,const bool &b)
+    : out(out), breakLine(b), msj(msj)
     {}
     NodeKind getKind() const override { return NodeKind::PrintStmt;}
 public:
+    std::string msj;
     bool breakLine;
     ExprPtr out;
+};
+
+class ReadStmt: public Stmt{
+public:
+    ReadStmt(const std::string &in,const bool&inLocal)
+    : in(in),inLocal(inLocal)
+    {}
+
+public:
+    std::string in;
+    bool inLocal;
 };
 
 class IfStmt: public Stmt{
@@ -294,6 +316,30 @@ public:
     NodeKind getKind() const override { return NodeKind::SeqStmt;}
 public:
     std::vector<StmtPtr> sequence;
+};
+
+class FuncDeclStmt: public Stmt{
+public:
+    FuncDeclStmt(const std::string &id, const std::vector<std::string>&args, const ExprPtr &block,const bool &isProc)
+    : id(id),args(args),block(block), isProcedure(isProc)
+    {}
+    NodeKind getKind() const override { return NodeKind::FuncDeclStmt;}
+public:
+    bool isProcedure;
+    std::string id;
+    std::vector<std::string>args;
+    ExprPtr block;
+};
+
+
+class FuncCallStmt: public Stmt{
+public:
+    FuncCallStmt(const std::string &id, const std::vector<ExprPtr> &args)
+    : id(id), args(args)
+    {}
+public:
+    std::string id;
+    std::vector<ExprPtr>args;
 };
 
 /* Statement seccion end */

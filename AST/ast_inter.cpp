@@ -1,6 +1,7 @@
 #include "ast_inter.h"
 #include <iostream>
-
+#include <algorithm>
+#include "test_defines.h"
 
 
 #define HANDLE_CASE(n) \
@@ -8,7 +9,7 @@
 
 
 
-return_type Interpreter::execute(const ASTNode * root){
+int Interpreter::execute(const ASTNode * root){
     switch (root->getKind())
     {
         HANDLE_CASE(NumberExpr);
@@ -30,210 +31,222 @@ return_type Interpreter::execute(const ASTNode * root){
         HANDLE_CASE(GreaterThanEqExpr);
         HANDLE_CASE(EqualExpr);
         HANDLE_CASE(DiffExpr);
-        HANDLE_CASE(StringExpr);
+        //HANDLE_CASE(StringExpr);
         HANDLE_CASE(AssignStmt);
         HANDLE_CASE(PrintStmt);
         HANDLE_CASE(SeqStmt);
         HANDLE_CASE(WhileStmt);
         HANDLE_CASE(IfStmt);
+        HANDLE_CASE(ReadStmt);
+        HANDLE_CASE(FuncDeclStmt);
+        HANDLE_CASE(FuncCallStmt);
+        HANDLE_CASE(ReturnExpr);
     default:
         throw std::string("No kind Found");
     }
 }
 
-return_type Interpreter::visit(const NumberExpr * expr){
-    return_type t;
-    t.value = expr->value;
-    return t;
+int Interpreter::visit(const NumberExpr * expr){
+    return expr->value;
 }
-return_type Interpreter::visit(const VariableExpr * expr){
-    return_type t;
-    expr->isLocal ? t.value = local_vars[expr->ident] : t.value = global_vars[expr->ident];
-    return t;
+int Interpreter::visit(const VariableExpr * expr){
+    return expr->isLocal ? variable_stack.top()[expr->ident] : global_vars[expr->ident];
 }
 
-return_type Interpreter::visit(const AddExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
-
-    return_type res;
-    res.value = a.value + b.value;
-    return res;
+int Interpreter::visit(const AddExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
+    return a+b;
 }
-return_type Interpreter::visit(const SubExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
+int Interpreter::visit(const SubExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
 
-    return_type res;
-    res.value = a.value - b.value;
-    return res;
+    return a-b;
 }
-return_type Interpreter::visit(const MultExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
+int Interpreter::visit(const MultExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
 
-    return_type res;
-    res.value = a.value * b.value;
-    return res;
+    return a*b;
 }
-return_type Interpreter::visit(const DivExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
-
-    return_type res;
-    res.value = b.value == 0 ? throw std::string("Can't divide by 0"): a.value / b.value;
-    return res;
+int Interpreter::visit(const DivExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
+    return b == 0 ? throw std::string("Can't divide by 0"): a / b;
 }
-return_type Interpreter::visit(const AndExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
-
-    return_type res;
-    res.value = a.value & b.value;
-    return res;
+int Interpreter::visit(const AndExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
+    return a & b;
 }
-return_type Interpreter::visit(const OrExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
-
-    return_type res;
-    res.value = a.value | b.value;
-    return res;
+int Interpreter::visit(const OrExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
+    return a | b;
 }
-return_type Interpreter::visit(const XorExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
-
-    return_type res;
-    res.value = a.value ^ b.value;
-    return res;
+int Interpreter::visit(const XorExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
+    return a ^ b;
 }
-return_type Interpreter::visit(const NotExpr * expr){
-    return_type a = execute(expr->child.get());
-    a.value = ~a.value;
-    return a;
+int Interpreter::visit(const NotExpr * expr){
+    int a = execute(expr->child.get());
+    return ~a;
 }
-return_type Interpreter::visit(const ModExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
-
-    return_type res;
-    res.value = a.value % b.value;
-    return res;
+int Interpreter::visit(const ModExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
+    return b == 0 ? throw std::string("Can't divide by 0") : a % b;
 }
-return_type Interpreter::visit(const ShlExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
-
-    return_type res;
-    res.value = a.value << b.value;
-    return res;
+int Interpreter::visit(const ShlExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
+    return a << b;
 }
-return_type Interpreter::visit(const ShrExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
-
-    return_type res;
-    res.value = a.value >> b.value;
-    return res;
+int Interpreter::visit(const ShrExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
+    return a>>b;
 }
-return_type Interpreter::visit(const LessThanExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
-
-    return_type res;
-    res.value = a.value < b.value;
-    return res;
+int Interpreter::visit(const LessThanExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
+    return a<b;
 }
-return_type Interpreter::visit(const LessThanEqExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
-
-    return_type res;
-    res.value = a.value <= b.value;
-    return res;
+int Interpreter::visit(const LessThanEqExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
+    return a<=b;
 }
-return_type Interpreter::visit(const GreaterThanExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
-
-    return_type res;
-    res.value = a.value > b.value;
-    return res;
+int Interpreter::visit(const GreaterThanExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
+    return a>b;
 }
-return_type Interpreter::visit(const GreaterThanEqExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
-
-    return_type res;
-    res.value = a.value >= b.value;
-    return res;
+int Interpreter::visit(const GreaterThanEqExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
+    return a>=b;
 }
-return_type Interpreter::visit(const EqualExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
-
-    return_type res;
-    res.value = a.value == b.value;
-    return res;
+int Interpreter::visit(const EqualExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
+    return a==b;
 }
-return_type Interpreter::visit(const DiffExpr * expr){
-    return_type a = execute(expr->left.get());
-    return_type b = execute(expr->right.get());
-
-    return_type res;
-    res.value = a.value != b.value;
-    return res;
+int Interpreter::visit(const DiffExpr * expr){
+    int a = execute(expr->left.get());
+    int b = execute(expr->right.get());
+    return a!=b;
 }
 
-return_type Interpreter::visit(const StringExpr * expr){
-    return_type a;
+/* int Interpreter::visit(const StringExpr * expr){
+    int a;
     a.str = expr->str;
     return a;
-}
-return_type Interpreter::visit(const AssignStmt * expr){
-    return_type a = execute(expr->expr.get());
-    global_vars[expr->ident] = a.value;
-    return_type zero;
-    return zero;
-}
-return_type Interpreter::visit(const PrintStmt * expr){
-    return_type a = execute(expr->out.get());
-    
-    if(a.str.empty()){
-        expr->breakLine ? std::cout<<a.value<<std::endl : std::cout<<a.value;
-    }else{
-        expr->breakLine ? std::cout<<a.str<<std::endl : std::cout<<a.str;
-    }
+} */
 
-    return_type zero;
-    return zero;
+int Interpreter::visit(const AssignStmt * expr){
+    int a = execute(expr->expr.get());
+    expr->isLocal ? variable_stack.top()[expr->ident] = a : global_vars[expr->ident] = a;
+    return 0;
+}
+int Interpreter::visit(const PrintStmt * expr){
+    int a = execute(expr->out.get());
+    expr->breakLine ? std::cout<<expr->msj<<a<<std::endl : std::cout<<expr->msj<<a;
+    return 0;
 }
 
-return_type Interpreter::visit(const IfStmt * expr){
-    return_type a = execute(expr->stmt_1.get());
-    if(a.value)
+int Interpreter::visit(const IfStmt * expr){
+    int a = execute(expr->stmt_1.get());
+    if(a)
         return execute(expr->stmt_1.get());
-    else if( expr->stmt_2 != nullptr)
+    else
         return execute(expr->stmt_2.get());
-    
-    return_type zero;
-    return zero;
 }
-return_type Interpreter::visit(const WhileStmt * expr){
-    return_type a = execute(expr->cond.get());
-    while(a.value){
+int Interpreter::visit(const WhileStmt * expr){
+    int a = execute(expr->cond.get());
+    while(a){
         execute(expr->block.get());
         a = execute(expr->cond.get());
     }
-
-    return_type zero;
-    return zero;
+    return 0;
 }
-return_type Interpreter::visit(const SeqStmt * expr){
+int Interpreter::visit(const SeqStmt * expr){
     for(const auto& s : expr->sequence){
         execute(s.get());
     }
-    return_type zero;
-    return zero;
+    return 0;
+}
+
+int Interpreter::visit(const ReadStmt *expr){
+    int r;
+    std::cin>>r;
+    expr->inLocal ? variable_stack.top()[expr->in] = r : global_vars[expr->in] = r;
+    return 0;
+}
+
+int Interpreter::visit(const FuncDeclStmt *expr){
+    for(auto funct : functions){
+        if( funct.id == expr->id){
+            std::cerr<< " Funcion ya declarada "<< std::endl;
+            throw false;
+        }
+    }
+    functions.push_back(*expr);
+}
+int Interpreter::visit(const FuncCallStmt *expr){
+    if( expr->id == "IntToHex"){
+        
+    }else{
+       if(isFuctionDefined(expr->id)){
+           int ret=0;
+           FuncDeclStmt foundFunc = getFunction(expr->id);
+           if(compareArgsSize(foundFunc,expr->args)){
+                addArgsToStack(foundFunc,expr->args);
+                if(foundFunc.isProcedure){
+                    execute(foundFunc.block.get());
+                }else{
+                    ret = execute(foundFunc.block.get());
+                }
+                variable_stack.pop();
+                return ret;
+           }else{
+               throw std::string("Verify arguments");
+           }
+       }else{
+           throw std::string("Function Not Defined");
+       }
+    }
+}
+
+int Interpreter::visit(const ReturnExpr * expr){
+    return execute(expr->ret.get());
+}
+
+bool Interpreter::isFuctionDefined(const std::string&name){
+    for(auto &f: functions){
+        if(f.id == name) return true;
+    }
+    return false;
+}
+void Interpreter::addArgsToStack(const FuncDeclStmt&funct,const std::vector<ExprPtr>&args){
+    LOCAL_VAR local;
+    int i = 0;
+    for(auto &arg: funct.args){
+        local.insert( std::make_pair(arg, execute(args[i].get())));
+        i++;
+    }
+
+    variable_stack.push(local);
+}
+
+bool Interpreter::compareArgsSize(const FuncDeclStmt&func,const std::vector<ExprPtr>&args){
+    return func.args.size() == args.size();
+}
+
+FuncDeclStmt Interpreter::getFunction(const std::string &name) const {
+    std::for_each(functions.begin(),functions.end(),[name](FuncDeclStmt const &f){
+        if(f.id == name) return f;
+    });
 }

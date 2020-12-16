@@ -10,7 +10,9 @@
 
     %token.descriptions{
         Identifier = "Indentifier",
+        KwContinue = "Keyword Continue",
         KwRead = "Keyword Read",
+        KwTo = "Keyword To",
         KwProc = "Keyword Procedure",
         KwFunc = "Keyword Function",
         KwProgram = "Keyword Program",
@@ -47,6 +49,7 @@
         SemiColon = "SemiColon Operator",
         Equal = "Equal Operator",
         Minus = "Minus Operator",
+        DoublePoint = "Double Point Operator",
         Plus = "Plus Operator",
         Mult = "Multiplication Operator",
         LessThan = "Less than Operator",
@@ -109,6 +112,8 @@ Token Lexer::findOperator(std::string &str){
         return Token::OpenParen;
     }else if(str == ")"){
         return Token::CloseParen;
+    }else if(str == ".."){
+        return Token::DoublePoint;
     }else{
         return Token::Unknown;
     }
@@ -185,6 +190,10 @@ Token Lexer::findKeyWord(std::string &str){
         return Token::KwRead;
     }else if(str == "true" || str == "false"){
         return Token::BoolConst;   
+    }else if(str == "continue"){
+        return Token::KwContinue;
+    }else if(str == "to"){
+        return Token::KwTo;
     }
     else{
         return Token::Identifier;
