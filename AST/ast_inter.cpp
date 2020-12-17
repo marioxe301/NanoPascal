@@ -231,7 +231,7 @@ bool Interpreter::isFuctionDefined(const std::string&name){
     return false;
 }
 void Interpreter::addArgsToStack(const FuncDeclStmt&funct,const std::vector<ExprPtr>&args){
-    LOCAL_VAR local;
+    VARS local;
     int i = 0;
     for(auto &arg: funct.args){
         local.insert( std::make_pair(arg, execute(args[i].get())));

@@ -1,0 +1,4 @@
+program holamundo;
+begin
+    writeLn('holamundo');
+end.

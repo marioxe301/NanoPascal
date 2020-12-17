@@ -1,7 +1,7 @@
 
 <progam> -> program ID ';' <variable-section> <subprogram-decl>* begin <statement>* end '.'
 <variable-section> -> var <variable-decl> | %epsilon
-<variable-decl> ( ID ',' )+ ':' <type> ';'
+<variable-decl> {( ID ',' )+ ':' <type> ';'}*
 <type> -> integer | boolean | char | array <array-body>
 <array-body> -> '[' intConst '..' intConst ']' of <type>
 <subprogram-decl> -> <subprogram-header> [<variable-section>] begin <statement>* end ';'
@@ -9,7 +9,7 @@
 <function-body> -> ID <funcOrProcArgs> ':' <type> ';'
 <procedure-body> -> ID <funcOrProcArgs> ';'
 
-<funcOrProcArgs> -> '(' ({ var <argument-body-var> | ID <argument-body-id> } ',' )+  ')' | %epsilon
+<funcOrProcArgs> -> '(' ({ var <argument-body-var> | ID <argument-body-id> } ',' )*  ')' | %epsilon
 <argument-body-var> -> ID ':' <type>
 <argument-bodyid> -> ':' <type>
 
@@ -33,7 +33,7 @@
 
 <AssignOrSubProgP> -> '[' <expr> ']' ':=' <expr> 
                     | ':=' <expr>
-                    | '(' (<expr> ',')+ ')'
+                    | '(' (<expr> ',')* ')'
                     | %epsilon
 
 <io-body> -> '(' (<argument> ',')+ ')'
@@ -43,9 +43,10 @@
 
 <AssignFor> -> ID <array-var>':=' <expr> ';'
 <array-var> -> '[' <expr> ']' | %epsilon
+<func-args> -> '(' ({<expr>}+,)* ')' | %epsilon
 
 <expr> -> <rel> ( '=' |'<>'| '<' | '>' | '<=' | '>=' <rel> )*
 <rel> -> <term> ( '+' | '-'| 'or'|'xor' <term>)*
 <term> -> <neg> ( '*' | 'div' | 'mod' | 'and' | 'shl' | 'shr' <neg> )*
 <neg> -> not <factor> | <factor>
-<factor> -> intConst| charConst | true | false | ID | '(' <expr> ')'
+<factor> -> intConst| charConst | true | false | ID <func-args> | '(' <expr> ')'

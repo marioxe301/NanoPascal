@@ -5,7 +5,7 @@
 #include<unordered_map>
 #include <stack>
  
-std::unordered_map<std::string,int> typedef LOCAL_VAR;
+std::unordered_map<std::string,int> typedef VARS;
 
 class Interpreter{
 public:
@@ -53,9 +53,9 @@ private:
     void addArgsToStack(const FuncDeclStmt&funct,const std::vector<ExprPtr>&args);
     bool compareArgsSize(const FuncDeclStmt&func,const std::vector<ExprPtr>&args);
     FuncDeclStmt getFunction(const std::string &name) const;
-    std::unordered_map<std::string,int>global_vars;
+    VARS global_vars;
     std::vector<FuncDeclStmt>functions;
-    std::stack<LOCAL_VAR> variable_stack;
+    std::stack<VARS> variable_stack;
 };
 
 #endif
