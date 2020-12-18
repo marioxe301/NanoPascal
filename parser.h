@@ -1,8 +1,8 @@
 #ifndef __PARSER__
 #define __PARSER__
 
-//#include "ast.h"
-//#include "test_defines.h"
+#include "ast.h"
+#include "test_defines.h"
 #include "lexer.h"
 
 #define HANDLE_ERROR(m) throw std::string(m)

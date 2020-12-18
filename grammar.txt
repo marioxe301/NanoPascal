@@ -32,11 +32,11 @@
                     | ID <AssignOrSubProgP>
 
 <AssignOrSubProgP> -> '[' <expr> ']' ':=' <expr> 
-                    | ':=' <expr>
+                    | ':=' <expr> 
                     | '(' (<expr> ',')* ')'
                     | %epsilon
 
-<io-body> -> '(' (<argument> ',')+ ')'
+<io-body> -> '(' (<argument> ',')+ ')' 
 <argument> -> stringConst | <expr>
 
 

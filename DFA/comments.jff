@@ -44,27 +44,12 @@
 			<x>274.0</x>
 			<y>260.0</y>
 		</state>
-		<state id="10" name="q10">
+		<state id="10" name="ret:q10">
 			<x>431.0</x>
 			<y>122.0</y>
 			<label>return findOperator(text);</label>
 		</state>
 		<!--The list of transitions.-->
-		<transition>
-			<from>0</from>
-			<to>1</to>
-			<read>-/</read>
-		</transition>
-		<transition>
-			<from>2</from>
-			<to>3</to>
-			<read>-EOL</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>8</to>
-			<read>-{</read>
-		</transition>
 		<transition>
 			<from>5</from>
 			<to>6</to>
@@ -81,9 +66,39 @@
 			<read>-)</read>
 		</transition>
 		<transition>
+			<from>4</from>
+			<to>10</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>4</from>
+			<to>5</to>
+			<read>-*</read>
+		</transition>
+		<transition>
 			<from>1</from>
 			<to>2</to>
 			<read>-/</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>8</to>
+			<read>-{</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>1</to>
+			<read>-/</read>
+		</transition>
+		<transition>
+			<from>6</from>
+			<to>5</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>2</from>
+			<to>3</to>
+			<read>-EOL</read>
 		</transition>
 		<transition>
 			<from>2</from>
@@ -99,16 +114,6 @@
 			<from>8</from>
 			<to>8</to>
 			<read>-Other</read>
-		</transition>
-		<transition>
-			<from>4</from>
-			<to>10</to>
-			<read/>
-		</transition>
-		<transition>
-			<from>4</from>
-			<to>5</to>
-			<read>-*</read>
 		</transition>
 		<transition>
 			<from>0</from>

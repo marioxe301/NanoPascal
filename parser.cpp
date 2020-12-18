@@ -39,6 +39,7 @@ void Parser::program(){
 }
 void Parser::VariableSection(){
     if(isSameToken(Token::KwVar)){
+        setCurrentToken();
         VariableDecl();
     }else{
         /* Epsilon */
@@ -183,6 +184,7 @@ void Parser::ProcedureBody(){
 
 void Parser::FunctOrProcArgs(){
     if(isSameToken(Token::OpenParen)){
+        setCurrentToken();
         while(true){
             if(isSameToken(Token::CloseParen)){
                 setCurrentToken();
@@ -335,6 +337,11 @@ void Parser::AssignOrSubProg(){
     }else if(isSameToken(Token::Identifier)){
         setCurrentToken();
         AssignOrSubProgP();
+        if(isSameToken(Token::SemiColon)){
+            setCurrentToken();
+        }else{
+            HANDLE_ERROR("Expected a ; but found a -> "+currentToken);
+        }
     }else{
         HANDLE_ERROR("Expected an ID or Print or Read but found -> "+currentToken);
     }
@@ -440,6 +447,11 @@ void Parser::FuncArgs(){
                 break;
             }
         }
+        /* if(isSameToken(Token::SemiColon)){
+            setCurrentToken();
+        }else{
+            HANDLE_ERROR("Expected a ; but found -> "+currentToken);
+        } */
     }else{
         /*Epsilon*/
     }

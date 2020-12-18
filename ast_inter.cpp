@@ -246,7 +246,7 @@ bool Interpreter::compareArgsSize(const FuncDeclStmt&func,const std::vector<Expr
 }
 
 FuncDeclStmt Interpreter::getFunction(const std::string &name) const {
-    std::for_each(functions.begin(),functions.end(),[name](FuncDeclStmt const &f){
+        std::for_each(functions.begin(),functions.end(),[name](FuncDeclStmt const &f){
         if(f.id == name) return f;
     });
 }
