@@ -29,9 +29,10 @@ void Parser::program(){
                 if(isSameToken(Token::Dot)){
                     setCurrentToken();
                 }else{
-                    HANDLE_ERROR("Expected a . but found -> "+currentToken);
+                    HANDLE_ERROR("Expected a . but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
                 }
             }
+            
         }
     }else{
         HANDLE_ERROR("Expected Program Word");
@@ -68,7 +69,7 @@ void Parser::VariableDecl(){
             VariableDecl(); // Recursion
         }
     }else{
-        HANDLE_ERROR("Expected a ; but found -> "+currentToken);
+        HANDLE_ERROR("Expected a ; but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
     }
 }
 void Parser::Type(){
@@ -82,7 +83,7 @@ void Parser::Type(){
         setCurrentToken();
         ArrayBody();
     }else{
-        HANDLE_ERROR("Unexpected type -> " + currentToken);
+        HANDLE_ERROR("Unexpected type -> '" + currentToken);
     }
 }
 void Parser::ArrayBody(){
@@ -100,22 +101,22 @@ void Parser::ArrayBody(){
                             setCurrentToken();
                             Type();
                         }else{
-                            HANDLE_ERROR("Expected an Of word but found -> "+currentToken);
+                            HANDLE_ERROR("Expected an Of word but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
                         }
                     }else{
-                        HANDLE_ERROR("Expected ] but found-> "+currentToken);
+                        HANDLE_ERROR("Expected ] but found-> '"+currentToken +"' in line number: " +lexer.getLineNumber());
                     }
                 }else{
-                    HANDLE_ERROR("Expected a DecimalConst but found -> "+currentToken);
+                    HANDLE_ERROR("Expected a DecimalConst but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
                 }
             }else{
-                HANDLE_ERROR("Expected a .. but found -> "+currentToken);
+                HANDLE_ERROR("Expected a .. but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
             }
         }else{
-            HANDLE_ERROR("Expected a DecimalConst but found -> "+currentToken);
+            HANDLE_ERROR("Expected a DecimalConst but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
     }else{
-        HANDLE_ERROR("Expected [ but found-> "+currentToken);
+        HANDLE_ERROR("Expected [ but found-> '"+currentToken +"' in line number: " +lexer.getLineNumber());
     }
 }
 
@@ -131,10 +132,10 @@ void Parser::SubprogramDecl(){
         if(isSameToken(Token::SemiColon)){
             setCurrentToken();
         }else{
-            HANDLE_ERROR("Expected a ; but found -> "+currentToken);
+            HANDLE_ERROR("Expected a ; but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
     }else{
-        HANDLE_ERROR("Expected a 'Begin' but found -> "+currentToken);
+        HANDLE_ERROR("Expected a 'Begin' but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
     }
 }
 
@@ -146,7 +147,7 @@ void Parser::SubprogramHeader(){
         setCurrentToken();
         ProcedureBody();
     }else{
-        HANDLE_ERROR("Expected a 'Function' or 'Procedure' but found -> "+currentToken);
+        HANDLE_ERROR("Expected a 'Function' or 'Procedure' but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
     }
 }
 void Parser::FunctionBody(){
@@ -159,13 +160,13 @@ void Parser::FunctionBody(){
             if(isSameToken(Token::SemiColon)){
                 setCurrentToken();
             }else{
-                HANDLE_ERROR("Expected a ; but found -> "+currentToken);
+                HANDLE_ERROR("Expected a ; but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
             }
         }else{
-            HANDLE_ERROR("Expected : but found -> "+currentToken);
+            HANDLE_ERROR("Expected : but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
     }else{
-        HANDLE_ERROR("Expecteda ID but found -> "+currentToken);
+        HANDLE_ERROR("Expecteda ID but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
     }
 }
 void Parser::ProcedureBody(){
@@ -175,10 +176,10 @@ void Parser::ProcedureBody(){
         if(isSameToken(Token::SemiColon)){
             setCurrentToken();
         }else{
-            HANDLE_ERROR("Expected a ; but found -> "+currentToken);
+            HANDLE_ERROR("Expected a ; but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
     }else{
-        HANDLE_ERROR("Expected a ID but found -> "+currentToken);
+        HANDLE_ERROR("Expected a ID but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
     }
 }
 
@@ -202,11 +203,11 @@ void Parser::FunctOrProcArgs(){
                 }
                 continue;
             }else{
-                HANDLE_ERROR("Expected a ID or Var word but found -> "+currentToken);
+                HANDLE_ERROR("Expected a ID or Var word but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
             }
         }
     }else{
-        HANDLE_ERROR("Expected a ( but found -> "+currentToken);
+        HANDLE_ERROR("Expected a ( but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
     }
 }
 
@@ -217,10 +218,10 @@ void Parser::ArgumentBodyVar(){
             setCurrentToken();
             Type();
         }else{
-            HANDLE_ERROR("Expected a : but found -> "+currentToken);
+            HANDLE_ERROR("Expected a : but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
     }else{
-        HANDLE_ERROR("Expected a ID but found -> "+currentToken);
+        HANDLE_ERROR("Expected a ID but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
     }
 }
 void Parser::ArgumentBodyId(){
@@ -228,7 +229,7 @@ void Parser::ArgumentBodyId(){
         setCurrentToken();
         Type();
     }else{
-        HANDLE_ERROR("Expected a : but found -> "+currentToken);
+        HANDLE_ERROR("Expected a : but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
     }
 }
 void Parser::Statement(){
@@ -240,7 +241,7 @@ void Parser::Statement(){
             Block();
             ElseStmt();
         }else{
-            HANDLE_ERROR("Expected Then word but found ->"+currentToken);
+            HANDLE_ERROR("Expected Then word but found ->"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
     }else if(isSameToken(Token::KwWhile)){
         setCurrentToken();
@@ -249,7 +250,7 @@ void Parser::Statement(){
             setCurrentToken();
             Block();
         }else{
-            HANDLE_ERROR("Expected a do word but found -> "+currentToken);
+            HANDLE_ERROR("Expected a do word but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
     }else if(isSameToken(Token::KwRepeat)){
         setCurrentToken();
@@ -260,10 +261,10 @@ void Parser::Statement(){
             if(isSameToken(Token::SemiColon)){
                 setCurrentToken();
             }else{
-                HANDLE_ERROR("Expected a ; but found -> "+currentToken);
+                HANDLE_ERROR("Expected a ; but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
             }
         }else{
-            HANDLE_ERROR("Expected an Until word but found -> "+currentToken);
+            HANDLE_ERROR("Expected an Until word but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
     }else if(isSameToken(Token::KwFor)){
         setCurrentToken();
@@ -276,10 +277,10 @@ void Parser::Statement(){
                 setCurrentToken();
                 Block();
             }else{
-                HANDLE_ERROR("Expected a do Word -> "+currentToken);
+                HANDLE_ERROR("Expected a do Word -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
             }
         }else{
-            HANDLE_ERROR("Expected a To word but found -> "+currentToken);
+            HANDLE_ERROR("Expected a To word but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
 
     }else if(isSameToken(Token::KwBreak)){
@@ -287,14 +288,14 @@ void Parser::Statement(){
         if(isSameToken(Token::SemiColon)){
             setCurrentToken();
         }else{
-            HANDLE_ERROR("Expected a ; -> "+currentToken);
+            HANDLE_ERROR("Expected a ; -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
     }else if(isSameToken(Token::KwContinue)){
         setCurrentToken();
         if(isSameToken(Token::SemiColon)){
             setCurrentToken();
         }else{
-            HANDLE_ERROR("Expected a ; -> "+currentToken);
+            HANDLE_ERROR("Expected a ; -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
     }else if(isSameToken(Token::SemiColon)){
         setCurrentToken();
@@ -328,22 +329,37 @@ void Parser::AssignOrSubProg(){
     if(isSameToken(Token::KwPrint)){
         setCurrentToken();
         IoBody();
+        if(isSameToken(Token::SemiColon)){
+            setCurrentToken();
+        }else{
+            HANDLE_ERROR("Expected a ; but found a -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
+        }
     }else if(isSameToken(Token::KwPrintLn)){
         setCurrentToken();
         IoBody();
+        if(isSameToken(Token::SemiColon)){
+            setCurrentToken();
+        }else{
+            HANDLE_ERROR("Expected a ; but found a -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
+        }
     }else if(isSameToken(Token::KwRead)){
         setCurrentToken();
         IoBody();
+        if(isSameToken(Token::SemiColon)){
+            setCurrentToken();
+        }else{
+            HANDLE_ERROR("Expected a ; but found a -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
+        }
     }else if(isSameToken(Token::Identifier)){
         setCurrentToken();
         AssignOrSubProgP();
         if(isSameToken(Token::SemiColon)){
             setCurrentToken();
         }else{
-            HANDLE_ERROR("Expected a ; but found a -> "+currentToken);
+            HANDLE_ERROR("Expected a ; but found a -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
     }else{
-        HANDLE_ERROR("Expected an ID or Print or Read but found -> "+currentToken);
+        HANDLE_ERROR("Expected an ID or Print or Read but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
     }
 }
 void Parser::AssignOrSubProgP(){
@@ -356,10 +372,10 @@ void Parser::AssignOrSubProgP(){
                 setCurrentToken();
                 Expr();
             }else{
-                HANDLE_ERROR("Expected a := but found -> "+currentToken);
+                HANDLE_ERROR("Expected a := but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
             }
         }else{
-            HANDLE_ERROR("Expected a ] but found -> "+currentToken);
+            HANDLE_ERROR("Expected a ] but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
     }else if(isSameToken(Token::OpenParen)){
         setCurrentToken();
@@ -395,7 +411,7 @@ void Parser::IoBody(){
             }
         }
     }else{
-        HANDLE_ERROR("Expected a ( but found -> "+currentToken);
+        HANDLE_ERROR("Expected a ( but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
     }
 }
 void Parser::Argument(){
@@ -415,13 +431,13 @@ void Parser::AssignFor(){
             if(isSameToken(Token::SemiColon)){
                 setCurrentToken();
             }else{
-                HANDLE_ERROR("Expected a ; but found a -> "+currentToken);
+                HANDLE_ERROR("Expected a ; but found a -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
             }
         }else{
-            HANDLE_ERROR("Expected a := but found a -> "+currentToken);
+            HANDLE_ERROR("Expected a := but found a -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
     }else{
-        HANDLE_ERROR("Expected an ID but found a -> "+currentToken);
+        HANDLE_ERROR("Expected an ID but found a -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
     }
 }
 void Parser::ArrayVar(){
@@ -450,7 +466,7 @@ void Parser::FuncArgs(){
         /* if(isSameToken(Token::SemiColon)){
             setCurrentToken();
         }else{
-            HANDLE_ERROR("Expected a ; but found -> "+currentToken);
+            HANDLE_ERROR("Expected a ; but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         } */
     }else{
         /*Epsilon*/
@@ -561,9 +577,9 @@ void Parser::Factor(){
         if(isSameToken(Token::CloseParen)){
             setCurrentToken();
         }else{
-            HANDLE_ERROR("Expected ) but found -> "+currentToken);
+            HANDLE_ERROR("Expected ) but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
         }
     }else{
-        HANDLE_ERROR("Expected Numeric const or ID or ( but found -> "+currentToken);
+        HANDLE_ERROR("Expected Numeric const or ID or ( but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
     }
 }

@@ -3,9 +3,9 @@
 /*!fa2lexer
     %option generate.tokens = true;
     %file "start.jff";
+    %file "comments.jff";
     %file "constants.jff";
     %file "identifiers.jff";
-    %file "comments.jff";
     %file "operators.jff";
 
     %token.descriptions{
@@ -117,6 +117,13 @@ Token Lexer::findOperator(std::string &str){
     }else{
         return Token::Unknown;
     }
+}
+
+void Lexer::setLineNumber(char t){
+    t == '\n' ? line++ : line = line;
+}
+std::string Lexer::getLineNumber(){
+    return std::to_string(line);
 }
 
 Token Lexer::findKeyWord(std::string &str){

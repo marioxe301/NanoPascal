@@ -9,7 +9,9 @@
 
 class Lexer{
 public:
-    Lexer(std::istream &input): input(input){}
+    Lexer(std::istream &input): input(input){
+        line = 1;
+    }
     
     std::string getText(){ return text; }
     int getNextChar(){ return input.get();}
@@ -23,9 +25,13 @@ public:
     Token findKeyWord(std::string &str);
     Token findStringConst(std::string &str);
     static const char *tokenToString(Token tk);
+    void setLineNumber(char t);
+    std::string getLineNumber();
+    
 private:
     std::string text;
     std::istream &input;
+    int line;
 };
 
 
