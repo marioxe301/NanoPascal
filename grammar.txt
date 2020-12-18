@@ -43,7 +43,7 @@
 
 <AssignFor> -> ID <array-var>':=' <expr> ';'
 <array-var> -> '[' <expr> ']' | %epsilon
-<func-args> -> '(' ({<expr>}+,)* ')' | %epsilon
+<func-args> -> '(' ({<expr>}+,)* ')'| '[' <expr> ']' | %epsilon
 
 <expr> -> <rel> ( '=' |'<>'| '<' | '>' | '<=' | '>=' <rel> )*
 <rel> -> <term> ( '+' | '-'| 'or'|'xor' <term>)*

@@ -6,6 +6,7 @@
 #include <string>
 #include <istream>
 #include <algorithm>
+#include <stack>
 
 class Lexer{
 public:
@@ -17,7 +18,11 @@ public:
     int getNextChar(){ return input.get();}
     void ungetChar(int ch){ input.unget();}
     void reportError(int ch){
-        throw std::string("Error inesperado");
+        throw std::string("Unexpected error");
+    }
+
+    void reportErrorInPreprocessor(){
+        throw std::string("Unexpected error in preprocessor");
     }
 
     Token getNextToken();
@@ -27,11 +32,13 @@ public:
     static const char *tokenToString(Token tk);
     void setLineNumber(char t);
     std::string getLineNumber();
+    void preprocessorCheck();
     
 private:
     std::string text;
     std::istream &input;
     int line;
+    std::stack<bool>isDefine;
 };
 
 

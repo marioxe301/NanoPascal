@@ -1,4 +1,16 @@
-program holamundo;
+program Directives;
 begin
-    writeLn( 'hola' );
-end.
+{$ifdef NANOPASCAL}
+    writeln('Hello World from NanoPascal');
+    {$ifdef HOLA}
+        writeln('HOLA');
+        {$ifdef ADIOS}
+            writeln('ADIOS');
+        {$endif}
+    {$else}
+        writeln('HOLA2');
+    {$endif}
+{$else}
+    writeln('Hello World from Other Pascal Compiler');
+{$endif}
+end. 

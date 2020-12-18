@@ -126,6 +126,40 @@ std::string Lexer::getLineNumber(){
     return std::to_string(line);
 }
 
+void Lexer::preprocessorCheck(){
+    // Esta funcion es llamada cuando reconoce dos tokens de tipo {$
+    // Aqui se utilizaran las funciones getNextChar y getNextToken
+    getNextToken();
+    if(text == "ifdef"){
+        getNextToken();
+        if(text == "nanopascal"){
+            isDefine.push(true);
+            getNextChar();
+        }else{
+            // consumria todo los caracteres hasta llegar a un ;
+            isDefine.push(false);
+            getNextChar();
+            while(getNextToken() != Token::SemiColon){
+                getNextToken();
+            }
+        }
+    }else if(text == "else"  && isDefine.top()){
+        getNextChar();
+        while(getNextToken() != Token::SemiColon){
+            getNextToken();
+        }
+        //getNextChar();
+    }else if( text == "else" && !isDefine.top()){
+        getNextChar();
+    }else if( text == "endif"){
+        isDefine.pop();
+        getNextChar();
+    }else{
+        reportErrorInPreprocessor();
+    }
+    return;
+}
+
 Token Lexer::findKeyWord(std::string &str){
 
     std::for_each(str.begin(),str.end(),[](char &c){

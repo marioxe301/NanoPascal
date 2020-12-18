@@ -463,11 +463,14 @@ void Parser::FuncArgs(){
                 break;
             }
         }
-        /* if(isSameToken(Token::SemiColon)){
+    }else if(isSameToken(Token::OpenBracket)){
+        setCurrentToken();
+        Expr();
+        if(isSameToken(Token::CloseBracket)){
             setCurrentToken();
         }else{
-            HANDLE_ERROR("Expected a ; but found -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
-        } */
+             HANDLE_ERROR("Expected an ] but found a -> '"+currentToken +"' in line number: " +lexer.getLineNumber());
+        }
     }else{
         /*Epsilon*/
     }

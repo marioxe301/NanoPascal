@@ -1,28 +1,17 @@
-$123food
-$food123
-123break
-$123shl3
-$123shl 3
-1250x356
-break123
-breakwhile
-%01100101
+program array1;
+var
+    a: array[1 .. 5] of Integer;
+    i, x: Integer;
+begin
+    a[1] := 10;
+    a[2] := 20;
+    a[3] := 30;
+    a[4] := 40;
+    a[5] := 50;
 
-// Este es un comentario de linea
-{ Este es un comentario
-de bloque
-}
-
-(*
-Tambien es un
-comentario de bloque
-*)
-
-
-program Holamundo;
-
-'Holamundo'
-
-'g'
-
-'"'
+    writeln(a[1], ' ',a[2], ' ',a[3], ' ',a[4], ' ',a[5]);
+    x := a[1];
+    a[1] := a[2];
+    a[2] := x;
+    writeln(a[1], ' ',a[2], ' ',a[3], ' ',a[4], ' ',a[5]);
+end.
