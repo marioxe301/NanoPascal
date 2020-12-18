@@ -7,7 +7,7 @@
  *******************************************)
 program BitOperators;
 
-{$ifdef NANO}
+{$ifdef LIBRARIES}
 //NanoPascal won't support libraries
 uses SysUtils;
 {$endif}

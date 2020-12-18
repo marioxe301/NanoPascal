@@ -28,6 +28,7 @@ private:
     Lexer lexer;
     Token currentTokenType;
     std::string currentToken;
+    std::vector<StmtPtr>seq;
 
 private:
 
