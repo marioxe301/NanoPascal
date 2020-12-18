@@ -127,8 +127,6 @@ std::string Lexer::getLineNumber(){
 }
 
 void Lexer::preprocessorCheck(){
-    // Esta funcion es llamada cuando reconoce dos tokens de tipo {$
-    // Aqui se utilizaran las funciones getNextChar y getNextToken
     getNextToken();
     if(text == "ifdef"){
         getNextToken();
@@ -138,16 +136,18 @@ void Lexer::preprocessorCheck(){
         }else{
             // consumria todo los caracteres hasta llegar a un ;
             isDefine.push(false);
-            getNextChar();
-            while(getNextToken() != Token::SemiColon){
-                getNextToken();
+            int ch = getNextChar();
+            while(ch != '{'){
+                ch = getNextChar();
             }
+            ungetChar(0);
         }
     }else if(text == "else"  && isDefine.top()){
-        getNextChar();
-        while(getNextToken() != Token::SemiColon){
-            getNextToken();
+        int ch = getNextChar();
+        while(ch != '{'){
+            ch = getNextChar();
         }
+        ungetChar(0);
         //getNextChar();
     }else if( text == "else" && !isDefine.top()){
         getNextChar();
